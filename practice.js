@@ -1053,3 +1053,135 @@ console.log(draw(deck()));*/
 //     }
 //     return fibtionary[n];
 // }
+
+// function BST (){
+//     this.root = null;
+// }
+//
+// function BSTNode(val){
+//     this.val = val;
+//     this.left = null;
+//     this.right = null;
+// }
+//
+// BST.prototype.Add = function (val){
+//     if(!this.root){
+//         this.root = new BSTNode(val);
+//         return this;
+//     }
+//     this.root.Add(val);
+//     return this;
+// }
+//
+// BSTNode.prototype.Add = function(val){
+//     if(val > this.val){
+//         if(this.right){
+//             this.right.Add(val);
+//         }
+//         else{
+//             this.right = new BSTNode(val);
+//         }
+//     }
+//     else{
+//        if(this.left){
+//            this.left.Add(val);
+//        }
+//        else{
+//            this.left = new BSTNode(val);
+//        }
+//     }
+// }
+//
+// var myTree = new BST;
+// myTree.Add(1);
+//
+// BST.prototype.IsValid = function(){
+//     return IsValid(this.root, -Infinity, Infinity);
+//
+//     function IsValid(node, min, max){
+//         if(!min){min = -Infinity;}
+//         if(!max){max = Infinity;}
+//         if(!node){
+//             return true;
+//         }
+//         if(node.val > max || node.val < min){ //greater than or equal to goes to the right, does this change things??
+//             return false;
+//         }
+//         return IsValid(node.right, node.val, max) && IsValid(node.left, min, node.left);
+//     }
+// }
+//
+// //recently going too fast with algorithms, should slow down and think about problems more systematically
+//
+//
+// //command to run is "node filename.js"
+//
+// console.log(myTree.IsValid())
+//
+// //can i add to a node in tree to create an invalid tree?
+// //count, these may be better as helper funcitons that pass nodes as well
+// //height
+//
+// BST.prototype.Count = function(){
+//     return Count(this.root);
+//
+//     function Count(node){
+//         if(!node){
+//             return;
+//         }
+//         if(!node.right && ! node.left){
+//             return 1;
+//         }
+//     }
+// }
+//
+// BST.prototype.IsPerfect = function(){
+//     if(this.Count() != Math.pow(2, (this.Height()-1)){ //2**2 is the same as 2^2 to the power of
+//         return false;
+//     }
+//     return true;
+// }
+//
+// BSTNode.prototype.IsFull = function(){
+//     if((this.right && ! this.left)||(!this.right && this.left)){ //(this.left ^ this.right) this is the same, "exclusive or" tests if one is true and the other is false, returns false is both are true or false, might only work with numbers.
+//         return false;
+//     }
+//     else if(!this.right && ! this.left){
+//         return true;
+//     }
+//     return this.right.IsFull() && this.left.IsFull();
+// }
+//
+// BST.prototype.IsComplete = function(node, idx, size){
+//     if(!size){
+//         size = this.Count();
+//     }
+//     if(!idx){
+//         idx = 0;
+//     }
+//     if(size <= idx){
+//         return false;
+//     }
+//     return this.IsComplete(node.left, 2*idx+1, size) && this.IsComplete(node.right, 2*idx+2, size);
+// }
+//
+// BST.prototype.IsComplete2 = function(node, size){ //this may not work....but seems like it should with some tinkering and I like breadth first search with a queue, maybe check if you queque a certain node and there are node ahead of it...return false
+//     if(!size){
+//         size = this.Count();
+//     }
+//     var counter = 0;
+//     var queue = new Queue();
+//     queue.enqueue((this.root, counter));
+//     counter++;
+//     while(counter <=size){//(!queue.IsEmpty)
+//         let n = queue.dequeue();
+//         if(!n[0]&&n[1]!=size){
+//             return false;
+//         }
+//         queue.enqueue(n[0].left, counter);
+//         counter++;
+//         queue.enqueue(n[0].right, counter);
+//         counter++;
+//     }
+//     return true;
+// }
