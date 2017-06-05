@@ -1054,134 +1054,1004 @@ console.log(draw(deck()));*/
 //     return fibtionary[n];
 // }
 
-// function BST (){
-//     this.root = null;
-// }
-//
-// function BSTNode(val){
-//     this.val = val;
-//     this.left = null;
-//     this.right = null;
-// }
-//
-// BST.prototype.Add = function (val){
-//     if(!this.root){
-//         this.root = new BSTNode(val);
-//         return this;
+// function countSection(arr){
+//     var count = 0;
+//     var pattern = /[0-9]/;
+//     for(var x = 0; x < arr.length; x++){
+//         for(var y = 0; y < arr[x].length; y++){
+//             console.log("regex test: " + pattern.test(arr[x][y]));
+//             if(pattern.test(arr[x][y])){
+//                 floodfill(arr, x, y, arr[x][y]);
+                
+//                 console.log( "X is: " + x + " Y is: " + y);
+//                 console.log(arr + " arr in main function. Count: " + count);
+//                 count++;
+//             }
+//         }
 //     }
-//     this.root.Add(val);
-//     return this;
+//     return "Final count it " + count;
 // }
-//
-// BSTNode.prototype.Add = function(val){
-//     if(val > this.val){
-//         if(this.right){
-//             this.right.Add(val);
-//         }
-//         else{
-//             this.right = new BSTNode(val);
-//         }
+
+// function floodfill(arr, x, y, value){
+//     if(x<0 || y<0 ||  x> arr.length - 1 || y> arr[x].length-1 || arr[x][y] != value){ 
+//         return; //don't need to return arr
 //     }
 //     else{
-//        if(this.left){
-//            this.left.Add(val);
-//        }
-//        else{
-//            this.left = new BSTNode(val);
-//        }
+//         arr[x][y] = "A";
+//         floodfill(arr, x+1, y, value);
+//         floodfill(arr, x-1, y, value);
+//         floodfill(arr, x, y+1, value);
+//         floodfill(arr, x, y-1, value);
 //     }
 // }
-//
-// var myTree = new BST;
-// myTree.Add(1);
-//
-// BST.prototype.IsValid = function(){
-//     return IsValid(this.root, -Infinity, Infinity);
-//
-//     function IsValid(node, min, max){
-//         if(!min){min = -Infinity;}
-//         if(!max){max = Infinity;}
-//         if(!node){
-//             return true;
-//         }
-//         if(node.val > max || node.val < min){ //greater than or equal to goes to the right, does this change things??
-//             return false;
-//         }
-//         return IsValid(node.right, node.val, max) && IsValid(node.left, min, node.left);
-//     }
-// }
-//
-// //recently going too fast with algorithms, should slow down and think about problems more systematically
-//
-//
-// //command to run is "node filename.js"
-//
+
+// var test = [[0, 0, 0, 1, 1],[0, 0, 1, 1, 2],[2, 2, 1, 0, 0]];
+
+// console.log(countSection(test));
+
+function BST (){
+    this.root = null;
+}
+
+function BSTNode(val){
+    this.val = val;
+    this.left = null;
+    this.right = null;
+}
+
+BST.prototype.Add = function (val){
+    if(!this.root){
+        this.root = new BSTNode(val);
+        return this;
+    }
+    this.root.Add(val);
+    return this;
+}
+
+BSTNode.prototype.Add = function(val){
+    if(val > this.val){
+        if(this.right){
+            this.right.Add(val);
+        }
+        else{
+            this.right = new BSTNode(val);
+        }
+    }
+    else{
+       if(this.left){
+           this.left.Add(val);
+       }
+       else{
+           this.left = new BSTNode(val);
+       }
+    }
+}
+
+var myTree = new BST;
+myTree.Add(1);
+
+BST.prototype.IsValid = function(){
+    return IsValid(this.root, -Infinity, Infinity);
+
+    function IsValid(node, min, max){
+        if(!min){min = -Infinity;}
+        if(!max){max = Infinity;}
+        if(!node){
+            return true;
+        }
+        if(node.val > max || node.val < min){ //greater than or equal to goes to the right, does this change things??
+            return false;
+        }
+        return IsValid(node.right, node.val, max) && IsValid(node.left, min, node.left);
+    }
+}
+
+//recently going too fast with algorithms, should slow down and think about problems more systematically
+
+
+//command to run is "node filename.js"
+
 // console.log(myTree.IsValid())
-//
-// //can i add to a node in tree to create an invalid tree?
-// //count, these may be better as helper funcitons that pass nodes as well
-// //height
-//
-// BST.prototype.Count = function(){
-//     return Count(this.root);
-//
-//     function Count(node){
-//         if(!node){
-//             return;
+
+//can i add to a node in tree to create an invalid tree?
+//count, these may be better as helper funcitons that pass nodes as well
+//height
+
+BST.prototype.Count = function(){
+    return Count(this.root);
+
+    function Count(node){
+        if(!node){
+            return;
+        }
+        if(!node.right && ! node.left){
+            return 1;
+        }
+    }
+}
+
+BST.prototype.IsPerfect = function(){
+    if(this.Count() != Math.pow(2, (this.Height()-1))){ //2**2 is the same as 2^2 to the power of
+        return false;
+    }
+    return true;
+}
+
+BSTNode.prototype.IsFull = function(){
+    if((this.right && ! this.left)||(!this.right && this.left)){ //(this.left ^ this.right) this is the same, "exclusive or" tests if one is true and the other is false, returns false is both are true or false, might only work with numbers.
+        return false;
+    }
+    else if(!this.right && ! this.left){
+        return true;
+    }
+    return this.right.IsFull() && this.left.IsFull();
+}
+
+BST.prototype.IsComplete = function(node, idx, size){
+    if(!size){
+        size = this.Count();
+    }
+    if(!idx){
+        idx = 0;
+    }
+    if(size <= idx){
+        return false;
+    }
+    return this.IsComplete(node.left, 2*idx+1, size) && this.IsComplete(node.right, 2*idx+2, size);
+}
+
+BST.prototype.IsComplete2 = function(node, size){ //this may not work....but seems like it should with some tinkering and I like breadth first search with a queue, maybe check if you queque a certain node and there are node ahead of it...return false
+    if(!size){
+        size = this.Count();
+    }
+    var counter = 0;
+    var queue = new Queue();
+    queue.enqueue((this.root, counter));
+    counter++;
+    while(counter <=size){//(!queue.IsEmpty)
+        let n = queue.dequeue();
+        if(!n[0]&&n[1]!=size){
+            return false;
+        }
+        queue.enqueue(n[0].left, counter);
+        counter++;
+        queue.enqueue(n[0].right, counter);
+        counter++;
+    }
+    return true;
+}
+
+BST.prototype.IsBal = function(){
+
+    function isBalanced(node){
+        if(!node){
+            return true;
+        }
+        if(Math.abs(Height(node.left) - Height(node.right)) > 1){
+            return false;
+        }
+        return isBalanced(node.left) && isBalanced(node.right);
+    };
+
+    return isBalanced(this.root);
+}
+//need a repair function T_T
+//MyTree
+myTree.Add(5);
+myTree.Add(7);
+myTree. Add(2);
+// console.log("The height of my tree is " + myTree.Height());
+
+// //squares in a "true" rectangle where one side is longer than the other
+
+// function sqInRect(lng, wdth){
+//   var solution = [];
+//   if(lng == wdth){
+//     return null;
+//   };
+//   Helper(lng, wdth);
+  
+//   function Helper(lng, wdth){
+//       if(lng < wdth){
+//         solution.push(lng);
+//         wdth -= lng;
+//       }
+//       else {
+//         solution.push(wdth);
+//         lng -= wdth;
+//       };
+//     if(lng > 0 && wdth > 0){
+//       Helper(lng, wdth);
+//     };
+//   };
+//   return solution;
+// }
+
+// //top solution on code wars
+// function sqInRect(lng, wdth){
+//   if(lng === wdth){
+//     return null;
+//   }
+//   var squares = [];
+  
+//   while(lng !== wdth){
+//     if (lng > wdth) {
+//       squares.push(wdth);
+//       lng = lng - wdth;
+//     } else {
+//       squares.push(lng);
+//       wdth = wdth - lng;
+//     }
+//   }
+//   squares[squares.length] = squares[squares.length -1]; //adds the extra 1 because the while conditional will stop when you have 1x1
+  
+//   return squares;
+// }
+// sqInRect(3, 5
+
+
+// //rbg to hexadecimal
+// function rgb(r, g, b){
+//   r = check(r);
+//   g = check(g);
+//   b = check(b);
+//   function check(n){
+//     if(n > 255){
+//     n = 255;
+//     };
+//     if(n < 0){
+//       n = 0;
+//       };
+//     console.log(n);
+//     return n;
+//   };
+//   var hexDict = {
+//     0: 0,
+//     1:1,
+//     2:2,
+//     3:3,
+//     4:4,
+//     5:5,
+//     6:6,
+//     7:7,
+//     8:8,
+//     9:9,
+//     10: "A",
+//     11: "B",
+//     12: "C",
+//     13: "D",
+//     14: "E",
+//     15: "F",
+//   };
+//   var answer = "";
+//   answer += hexDict[Math.floor(r/16)];
+//   answer += hexDict[Math.floor(r%16)];
+//   answer += hexDict[Math.floor(g/16)];
+//   answer += hexDict[Math.floor(g%16)];
+//   answer += hexDict[Math.floor(b/16)];
+//   answer += hexDict[Math.floor(b%16)];
+//   return answer;
+// }
+
+// //top solution from code wars
+// function rgb(r, g, b){
+//   return toHex(r)+toHex(g)+toHex(b);
+// }
+
+// function toHex(d) {
+//     if(d < 0 ) {return "00";}
+//     if(d > 255 ) {return "FF";}
+//     return  ("0"+(Number(d).toString(16))).slice(-2).toUpperCase()
+// }
+
+// //ToString(16) uses base 16 when converting......
+// //.slice(-2) selects the last two characters of the string
+
+// console.log(rgb(173,255,47));
+
+// //maximum subarray, returns the sum of the maximum sub array in an array
+// var maxSequence = function(arr){
+//   if(arr.length == 0){
+//     return 0;
+//   };
+//   var maxMax = arr[0];
+//   var curMax = 0;
+//   for(var i = 0; i < arr.length; i++){
+//     curMax += arr[i];
+//     if(curMax > maxMax){
+//       maxMax = curMax;
+//       }
+//       if(curMax < 0){
+//          curMax = 0;
+//       }
+//   };
+//   // return arr.slice(start, end);
+//   return maxMax;
+// }
+
+// //max subarray best answer
+// var maxSequence = function(arr){
+//   var min = 0, ans = 0, i, sum = 0;
+//   for (i = 0; i < arr.length; ++i) {
+//     sum += arr[i];
+//     min = Math.min(sum, min);
+//     ans = Math.max(ans, sum - min);
+//   }
+//   return ans;
+// }
+
+// //max subarray micheal's answer
+// var sumArray = function(array) {
+//   var ans = 0;
+//   var sum = 0;
+//   for (var i = 0; i < array.length; i++) {
+//     ans = Math.max(0, ans + array[i]);
+//     sum = Math.max(sum, ans)
+//   }
+//   return sum;
+// };
+
+// //hill climbing solution to traveling salesman
+// var salesmanMap = [[0,1,2,4], 
+//                   [1,0,1,3], 
+//                   [2,1,0,7], 
+//                   [4,3,7,0]];
+
+// var article = [1,2];
+
+// // var topics = [topic1, topic2, topic3]
+
+// Tag = function(tag, tagid, weight){
+//     this.tag = tag;
+//     this.id = tagid;
+    // this.weight = 1; //is this how you set a default lol?
+    // this.weight = weight;
+    //do I need more information?? can I just leverage the indexes in the graph?
+    //no weights lose directionality
+// }
+
+// Customer = function(title, tag1, tag2, tag3){
+//     var id = 1;
+//     var tag1 = new Tag(tag1, 0, id);
+//     var tag2 = new Tag(tag2, 1, id);
+//     var tag3 = new Tag(tag3, 2, id);
+//     var tags = [tag1, tag2, tag3];
+//     this.title = title;
+//     this.book = [];
+//     this.tags = [tag1, tag2, tag3]; 
+//     this.graph = new Graph();
+    // this.graph = [[0, 10, 10],
+    //               [10, 0, 10],
+    //               [10, 10, 0]]; //intialize the adjacency matrix with equal weight and equal distance between each node.
+    // this.newTag = function(tag){//pass article so you have access to other two articles??
+    //     if(!tag.id){//new tag
+    //         this.addTag(tag);
+    //     }
+    //     else{//tag exist, check for vertices.
+    //         this.graph.addEdge(tag);
+    //     }
+    // }
+    // this.addTag = function(tagtitle, tag1, tag2){
+    //     //have a check to see if this tag is in the matrix already BEFORE going into this matrix
+    //     var index = this.graph.length;//Maybe have a counter that keeps track of the "filled" matrix, and double the size of the matrix everytime you need to add to it.
+    //     console.log(index);
+    //     if(tagtitle !instanceof(tag)){
+    //         var tag = new tag(tagtitle);
+    //     }
+    //     this.graph.push([]);
+    //     this.graph[index][tag1.id] = 10;
+    //     this.graph[index][index] = 0;
+    //     if(tag2){
+    //         this.graph[index][tag2.id] = 10;
+    //     }
+    // }
+    // this.addEdge = function(tag1, tag2, tag3){
+    //     if(!this.graph[tag1][tag2]){
+    //         this.graph[tag1.id][tag2.id] = 10;
+    //         this.graph[tag2.id][tag1.id] = 10;
+    //     }
+    //     if(!this.graph[tag1][tag3]){
+    //         this.graph[tag1.id][tag3.id] = 10;
+    //         this.graph[tag3.id][tag1.id] = 10;
+    //     }
+    // }
+    // this.doubleGraph = function(){
+    //     this.graph.length = this.graph.length*2;
+    //     var newLength = this.graph[0].length*2;
+    //     for(var i = 0; i < 3; i++){
+    //         // console.log(this.graph[i]);
+    //         this.graph[i].length = newLength;
+    //     }
+    //     return this;
+    // }
+// }
+
+// function Graph(tag1, tag2, tag3) {
+//     this.vertices = [];
+//     this.edges = [];
+//     this.numberOfEdges = 0;
+//     this.addVertex(tag1);
+//     this.addVertex(tag2);
+//     this.addVertex(tag3);
+//     }
+
+//     Graph.prototype.addVertex = function(vertex) {
+//     this.vertices.push(vertex);
+//     this.edges[vertex] = [];
+//     };
+//     Graph.prototype.removeVertex = function(vertex) {
+//     var index = this.vertices.indexOf(vertex);
+//     if(~index) {
+//         this.vertices.splice(index, 1);
+//     }
+//     while(this.edges[vertex].length) {
+//         var adjacentVertex = this.edges[vertex].pop();
+//         this.removeEdge(adjacentVertex, vertex);
+//     }
+//     };
+//     Graph.prototype.addEdge = function(vertex1, vertex2) {
+//         var obj1 = {};
+//         obj1[vertex1] = 10;
+//         var obj2 = {};
+//         obj2[vertex2] = 10;
+//         this.edges[vertex1].push(obj2);
+//         this.edges[vertex2].push(obj1);
+//         this.numberOfEdges++;
+//     };
+//     Graph.prototype.editEdge = function(vertex1, vertex2, vertex3, feedback){
+//         for(var i = 0; i < this.edges[vertex1].length; i++){
+//             if(this.edges[vertex1][i].hasOwnProperty(vertex2)){
+//                 this.edges[vertex1][i][vertex2] += feedback;
+//                 break;
+//             }
 //         }
-//         if(!node.right && ! node.left){
-//             return 1;
+//         for(i = 0; i < this.edges[vertex2].length; i++){
+//             if(this.edges[vertex2][i].hasOwnProperty(vertex1)){
+//                 this.edges[vertex2][i][vertex1] += feedback;
+//                 break;
+//             }
+//         }
+//          for(var i = 0; i < this.edges[vertex1].length; i++){
+//             if(this.edges[vertex1][i].hasOwnProperty(vertex3)){
+//                 this.edges[vertex1][i][vertex3] += feedback;
+//                 break;
+//             }
+//         }
+//         console.log(vertex3);
+//         console.log(this.edges[vertex3]);               
+//         for(i = 0; i < this.edges[vertex3].length; i++){
+//             if(this.edges[vertex3][i].hasOwnProperty(vertex1)){
+//                 this.edges[vertex3][i][vertex1] += feedback;
+//                 break;
+//             }
+//         }
+//     };
+//     Graph.prototype.articleScore = function(tag1, tag2, tag3){
+//         var score = 0;
+//         var found;
+//         for(var i = 0; i < this.edges[tag1].length; i++){
+//             if(this.edges[tag1][i].hasOwnProperty(tag2)){
+//                 score += this.edges[tag1][i][tag2];
+//                 found = 1;
+//                 break;
+//             }
+//         }
+//         if(found != 1){ //they didn't find the tag
+//             this.addVertex(tag2);
+//             this.addEdge(tag1, tag2);
+//             score += 10;
+//         }
+//         found = 0;
+//         for(i = 0; i < this.edges[tag1].length; i++){
+//             if(this.edges[tag1][i].hasOwnProperty(tag3)){
+//                 // console.log(this.edges[tag1][i][tag3]);
+//                 score += this.edges[tag1][i][tag3];
+//                 found = 1;
+//                 break;
+//             }
+//         }
+//         if(found != 1){ //they didn't find the tag
+//             this.addVertex(tag3);
+//             this.addEdge(tag1, tag3);
+//             score += 10;
+//             found = 0;
+//         }
+//         // console.log("score incoming");
+//         // console.log(score);
+//         return score;
+//     }
+//     Graph.prototype.removeEdge = function(vertex1, vertex2) {
+//     var index1 = this.edges[vertex1] ? this.edges[vertex1].indexOf(vertex2) : -1;
+//     var index2 = this.edges[vertex2] ? this.edges[vertex2].indexOf(vertex1) : -1;
+//     if(~index1) {
+//         this.edges[vertex1].splice(index1, 1);
+//         this.numberOfEdges--;
+//     }
+//     if(~index2) {
+//         this.edges[vertex2].splice(index2, 1);
+//     }
+// };
+
+// var liz = new Customer("algorithm queen", "sleep", "candy", "tentacles");
+// //    this.graph = new Graph();
+
+// liz.graph.addVertex(1);
+// liz.graph.addVertex(3);
+// liz.graph.addVertex(4);
+// // liz.graph.addEdge(1,3);
+// // liz.graph.addEdge(1,4);
+// liz.graph.articleScore(1,3,4);
+// // liz.graph.editEdge(1,3, 4, -1);
+// // liz.graph.articleScore(1,3,4);
+// liz.graph.articleScore(1,3,5);
+// // liz.graph.editEdge(1,5, 1);
+// // liz.graph.articleScore(1,3,5);
+// console.log(liz.graph.edges);
+
+
+
+
+// Book = function(customer){
+//     this.articles = [];
+//     this.customer = customer;
+// }
+
+// Article = function(title, id, tag1, tag2, tag3){
+//     this.id = id;
+//     this.title = title;
+//     this.tag = [tag1, tag2, tag3];
+//     this.score = 0;
+//     this.feedback;
+// }
+
+// var news = new Article("raining cats and dogs", 1, 3, 5);
+// news.feedback = 1;
+// console.log(news);
+// liz.graph.editEdge(news.tag[0], news.tag[1], news.tag[2], news.feedback);
+// console.log("SCORE");
+// console.log(liz.graph.articleScore(news.tag[0], news.tag[1], news.tag[2]))
+// console.log(liz.graph.edges);
+
+
+
+// console.log(liz);
+// liz.doubleGraph();
+// console.log(liz.graph);
+// console.log(liz.graph);
+
+// function articleScore(arr, node, articleNodes){
+//     var articleScore= 0;
+//     for(var i = 0; i < articleNodes.length; i++){
+//         articleScore += arr[node][articleNodes[i]];
+//     }
+//     return articleScore;
+// }
+
+// function articleFeedback(arr, node, articleNode, feedback){
+//     for(var i = 0; i < articleNode.length; i++){
+//         arr[node][articleNode[i]] += feedback;
+//     }
+// }
+
+// function firstSort(customer, articles){
+//     var tag1 = customer.tag[0];
+//     var tag2 = customer.tag[1];
+//     var tag3 = customer.tag[2];
+//     var round2 = [];
+//     for(var i = 0; i < articles.length; i++){
+//         if(articles[i].tags){//if article contains one of the three tags
+//             round2.push(articles[i]);
 //         }
 //     }
+//     return round2;
 // }
-//
-// BST.prototype.IsPerfect = function(){
-//     if(this.Count() != Math.pow(2, (this.Height()-1)){ //2**2 is the same as 2^2 to the power of
-//         return false;
-//     }
-//     return true;
+
+// function articleSort(arr, customer, articles){
+
 // }
-//
-// BSTNode.prototype.IsFull = function(){
-//     if((this.right && ! this.left)||(!this.right && this.left)){ //(this.left ^ this.right) this is the same, "exclusive or" tests if one is true and the other is false, returns false is both are true or false, might only work with numbers.
-//         return false;
+
+// console.log("article score" + articleScore(salesmanMap, 3, article));
+// articleFeedback(salesmanMap, 3, article, -1);
+// console.log("article score" + articleScore(salesmanMap, 3, article));
+
+
+
+// var route = [0,1,2,3];
+//give map and route, return distance
+    //route is an array of locations
+// function oneRoute(arr, route){
+//     var distance = 0;
+//     var start;
+//     var end;
+//     for(var i = 0; i < route.length; i++){
+//         start = route[i];
+//         end = route[(i+1)%arr.length]; //make this cycle back tot eh first element when you're looking at the last element, it does!
+//         // console.log("start" + start);
+//         // console.log("end" + end);
+//         distance += arr[start][end];
 //     }
-//     else if(!this.right && ! this.left){
-//         return true;
-//     }
-//     return this.right.IsFull() && this.left.IsFull();
+//     return distance; //this is returning the right distance! Now to make the algorithm to do the swap and check.
 // }
-//
-// BST.prototype.IsComplete = function(node, idx, size){
-//     if(!size){
-//         size = this.Count();
+
+// console.log(oneRoute(salesmanMap, route));
+
+//make a funciton that hill climbs for one given route, make it later take an array of routes and pick the best one in a multidemenional array. Or maybe generate a bunch of routes..also use the two subtractions and two additions to make the changes to distance.
+// function hillClimb(arr, route){
+//     var bestRoute = route;
+//     var bestDistance = oneRoute(arr, route);
+//     var temp;
+//     var testRoute;
+//     var testDistance;
+//     for(var i = 0; i < route.length; i ++){
+//         temp = arr[i];
+//         arr[i] = arr[i+1];
+//         arr[i+1] = temp; //what happens to teh swap at the end....make sure it doesn't break and the looping back to original position works
+//         testRoute = route; //is this test Route an extra variable??
+//         testDistance = oneRoute(arr, testRoute);
+//         if(testDistance < bestDistance)
+//         //ugh need another loop in here somewhere to explore better options.
 //     }
-//     if(!idx){
-//         idx = 0;
-//     }
-//     if(size <= idx){
-//         return false;
-//     }
-//     return this.IsComplete(node.left, 2*idx+1, size) && this.IsComplete(node.right, 2*idx+2, size);
 // }
-//
-// BST.prototype.IsComplete2 = function(node, size){ //this may not work....but seems like it should with some tinkering and I like breadth first search with a queue, maybe check if you queque a certain node and there are node ahead of it...return false
-//     if(!size){
-//         size = this.Count();
-//     }
-//     var counter = 0;
-//     var queue = new Queue();
-//     queue.enqueue((this.root, counter));
-//     counter++;
-//     while(counter <=size){//(!queue.IsEmpty)
-//         let n = queue.dequeue();
-//         if(!n[0]&&n[1]!=size){
-//             return false;
+
+//return false or the number of flips needed to make all the pancakes smiley face up.
+// function pancake(griddle){
+//     var pancakeside = {
+//         // O:☺,
+//         // ☺:O,
+//         0:1,
+//         1:0,
+//     };
+
+//     var flips = 0;
+//     for(var i = 0; i < griddle.length -2; i++){
+//         if(griddle[i] == 0){
+//             flips++;
+//             for(var j = i; j < (i +3); j++){
+//                 griddle[j]=pancakeside[griddle[j]];
+//             }
 //         }
-//         queue.enqueue(n[0].left, counter);
-//         counter++;
-//         queue.enqueue(n[0].right, counter);
-//         counter++;
 //     }
-//     return true;
+     
+//      if(griddle[griddle.length-1] == 0 || griddle[griddle.length-2] ==0){
+//          return false;
+//      }
+
+//      return flips;   
+
 // }
+
+// // var griddle = [☺, ☺, ☺, O, O, O];
+// var griddle = [1, 1, 1, 0, 0, 0];
+// var griddle2 = [1, 0, 0, 1, 1, 0,];
+// console.log(pancake(griddle2));
+
+//linked list madness
+//constructors
+Node = function(val){
+    this.value = val;
+    this.next = null;
+}
+
+SLL = function(){
+    this.head = null;
+}
+
+SLL.prototype.AddToFront = function(val){ //make this better, accept node or value....
+    if (!this.head){
+        this.head = new Node(val);
+        // console.log(this.head);
+        return this;
+    }
+    var node = new Node(val);
+    node.next = this.head;
+    this.head = node;
+    return this;
+}
+
+SLL.prototype.find = function(){
+    var runner = this.head;
+    while(runner){
+
+    }
+}
+
+SLL.prototype.printAll = function(){ //why do you print undefined at the end??? I was console logging this function which reurns nothing...therefore it was undefined
+    var runner = this.head;
+    while(runner){
+        console.log(runner.value);
+        runner = runner.next;
+    }
+}
+
+SLL.prototype.RemoveFromFront = function(){
+    var runner = this.head;
+    this.head = this.head.next;
+    runner.next = null;
+    return runner;
+}
+
+SLL.prototype.Traverse = function(){
+    var runner = this.head;
+    while(runner.next){
+        runner = runner.next;
+    }
+    return runner;
+}
+
+SLL.prototype.RemoveFromBack = function(){
+    
+}
+
+SLL.prototype.Reverse = function(){
+    if(!this.head){
+        return this;
+    }
+    if(!this.head.next){ //if list is only one thing long
+        return this;
+    }
+    var runner = this.head;
+    var list2 = new SLL;
+    list2.head = this.head.next;
+    while(list2.head.next){
+        this.AddToFront(list2.RemoveFromFront().value);
+    }
+    this.AddToFront(list2.head.value);
+    runner.next = null;
+    return this;
+}
+
+// var list = new SLL();
+// // console.log(list);
+// list.AddToFront(3);
+// list.AddToFront(5);
+// list.AddToFront(2);
+// list.printAll();
+// // list.removeFromFront();
+// list.Reverse(); 
+// list.printAll();
+
+// var a = new Node(1);
+// var b = new Node(b);
+// var c = new Node(c);
+
+// a.next = b;
+// b.next = c;
+// c.next = a;
+
+// console.log(a);
+//stringify head find when next = [Circular], then you will know that you have a loop in the linked list
+
+// //squares in a "true" rectangle where one side is longer than the other
+
+// function sqInRect(lng, wdth){
+//   var solution = [];
+//   if(lng == wdth){
+//     return null;
+//   };
+//   Helper(lng, wdth);
+  
+//   function Helper(lng, wdth){
+//       if(lng < wdth){
+//         solution.push(lng);
+//         wdth -= lng;
+//       }
+//       else {
+//         solution.push(wdth);
+//         lng -= wdth;
+//       };
+//     if(lng > 0 && wdth > 0){
+//       Helper(lng, wdth);
+//     };
+//   };
+//   return solution;
+// }
+
+// //top solution on code wars
+// function sqInRect(lng, wdth){
+//   if(lng === wdth){
+//     return null;
+//   }
+//   var squares = [];
+  
+//   while(lng !== wdth){
+//     if (lng > wdth) {
+//       squares.push(wdth);
+//       lng = lng - wdth;
+//     } else {
+//       squares.push(lng);
+//       wdth = wdth - lng;
+//     }
+//   }
+//   squares[squares.length] = squares[squares.length -1]; //adds the extra 1 because the while conditional will stop when you have 1x1
+  
+//   return squares;
+// }
+
+//print numbers fromm 1 to 255
+
+// function print(){
+//     for(var i = 0; i <= 255; i++){
+//         console.log(i);
+//     }
+// }
+
+// print();
+
+//print odd numbers from 1 to 1000
+
+// function odds(){
+//     for(var i = 1; i <= 1000; i += 2){
+//         console.log(i);
+//     }
+// }
+
+// odds();
+
+// function sumOdds(){
+//     var sum = 0;
+//     for(var i = 1; i <= 5000; i+=2){
+//         sum += i;
+//     }
+//     return sum;
+// }
+
+// // console.log(sumOdds());
+
+// function printArray(arr){
+//     for(var i = 0; i < arr.length; i++){
+//         console.log(arr[i]);
+//     }
+// }
+
+// // printArray([1, 2, 3, 4, 5]);
+
+// function maxArray(arr){
+//     var max = arr[0];
+//     for(var i = 0; i < arr.length; i++){
+//         if(arr[i]>max){
+//             max = arr[i];
+//         }
+//     }
+//     return max;
+// }
+
+// var arr = [1, 2, 3, 4, 5, 12, 3, 4, 7];
+
+// // console.log(maxArray(arr));
+
+// function arraySum(arr){
+//     var sum = 0;
+//     for(var i = 0; i < arr.length; i++){
+//         sum += arr[i];
+//     }
+//     return sum/arr.length;
+// }
+
+// // console.log(arraySum(arr));
+
+// function arrayOfOdds(){
+//     var arr = [];
+//     for(var i = 0; i <= 255; i++){
+//         arr.push(i);
+//     }
+//     console.log(arr);
+// }
+
+// // arrayOfOdds();
+
+// function greaterThanY(arr, y){
+//     var count = 0;
+//     for(var i = 0; i < arr.length; i++){
+//         if(arr[i] > y){
+//             count++;
+//         }
+//     }
+//     console.log(count);
+// }
+
+// // greaterThanY(arr, 4);
+
+// function mapSquare(arr){
+//     for(var i = 0; i < arr.length; i++){
+//         arr[i] = arr[i]*arr[i];
+//     }
+//     return arr;
+// }
+
+// console.log(mapSquare(arr));
+
+//buying stocks the algorithm
+//write a function that returns the greatest(or least worst) profit you can make in a day if you can buy and sell one time.
+// function stockMarket(arr){
+//     var max = arr[1] - arr[0];
+//     var buy = arr[0];
+//     for(var i = 0; i < arr.length; i++){
+//         if(arr[i] < buy){
+//             buy = arr[i];
+//         }
+//         if(arr[i] - buy > max){
+//             max = arr[i] - buy;
+//         }
+//     }
+//     return max;
+// }
+
+// var array = [1, 50, 5, 13, 4, 7, 22];
+
+// console.log(stockMarket(array));
+
+//let's make some heaps
+var heap = ["heap"]; //min heap
+function AddToHeap(heap, val){
+    var valIndex = heap.length;
+    var parentIndex = Math.floor(valIndex/2);
+    var temp;
+    heap.push(val);
+    if(valIndex == 1){
+        return;
+    }
+    while(heap[parentIndex] > val){
+        temp = heap[parentIndex];
+        heap[parentIndex] = heap[valIndex];
+        heap[valIndex] = temp;
+        valIndex = parentIndex;
+        parentIndex = Math.floor(parentIndex/2);
+    }
+}
+
+// AddToHeap(heap, 1);
+// AddToHeap(heap, 3);
+// AddToHeap(heap, 5);
+// AddToHeap(heap, 11);
+// AddToHeap(heap, 7);
+// console.log(heap);
+// AddToHeap(heap, 2);
+// console.log(heap);
+
+// Write a node.js function that takes as input:
+// • current:  an array of strings
+// • history:  an array of (array of strings)
+
+// and returns:
+// • newstrings:  a subset of current, containing only those strings which are in current but NOT in history
+// • newhistory:  an array of (array of strings) which is a modified version of history such that a) the zeroth (array of strings) is removed, and the newstrings array is appended to the end
+
+// Example input:
+// • current:  [ "xxx", "aaa", "yyy", "hij" ]
+// • history:  [ [ "aaa", "bbb" ], [ "ccc", "ddd", "eee", "fff" ], [ "ggg", "hij", "abc" ]  ]
+
+// Example output:
+// • newstrings:  [ "xxx", "yyy" ]
+// • newhistory:  [ [ "ccc", "ddd", "eee", "fff" ], [ "ggg", "hij", "abc" ], [ "xxx", "yyy" ] ]
+
+var current = [ "xxx", "aaa", "yyy", "hij" ];
+var history = [ [ "aaa", "bbb" ], [ "ccc", "ddd", "eee", "fff" ], [ "ggg", "hij", "abc" ]  ];
+
+function StringMadness(current, history){
+
+    var obj = {};
+    var newStrings = [];
+    var newHistory = [];
+
+    for(var i = 0; i < history.length; i++){
+        for(var j = 0; j < history[i].length; j++){
+            if(!obj[history[i][j]]){
+                obj[history[i][j]] = 1;
+            }
+        }
+    }
+
+    for(i = 0; i < current.length; i++){
+        if(!obj[current[i]]){
+            newStrings.push(current[i]);
+        }
+    }
+
+    history.shift();
+    history.push(newStrings); //could just return history
+    newHistory = history;
+    console.log(newStrings);
+    console.log(newHistory);
+}
+
+StringMadness(current, history);
