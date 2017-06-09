@@ -1127,6 +1127,19 @@ BSTNode.prototype.Add = function(val){
     }
 }
 
+BST.prototype.MinToMaxTraversal = function(){
+    return mtmTraversal(this.root);
+
+    function mtmTraversal (node){
+        if(!node){
+            return;
+        }
+        mtmTraversal(node.left);
+        console.log(node.val);
+        mtmTraversal(node.right);
+    }
+}
+
 var myTree = new BST;
 myTree.Add(1);
 
@@ -1239,8 +1252,40 @@ BST.prototype.IsBal = function(){
 //MyTree
 myTree.Add(5);
 myTree.Add(7);
-myTree. Add(2);
+myTree.Add(2);
 // console.log("The height of my tree is " + myTree.Height());
+
+
+BST.prototype.isBST = function(){
+    return isBSTfun(this.root);
+    function isBSTfun(node){
+        if(!node){
+            return true;
+        }
+        //hmm, might have to think about accessing places I should be right here...
+        if((node.left && node.left.val >= node.val) || (node.right && node.right.val < node.val)) {
+
+            return false;
+        }
+        // if(node.right && node.right.val < node.val){
+        //     return false;
+        // }
+        return isBSTfun(node.right) || isBSTfun(node.left);
+    }
+}
+
+var badtree = new BST;
+badtree.Add(3);
+badtree.Add(5);
+badtree.Add(2);
+
+badtree.root.left.val = 5;
+// console.log(badtree.root.left.val);
+badtree.MinToMaxTraversal();
+//print this BST DONE. It is broken!
+//check if the isBSt function works Woo! It works I was just calling it on the wrong tree like a fool!
+
+console.log(badtree.isBST());
 
 // //squares in a "true" rectangle where one side is longer than the other
 
@@ -2024,34 +2069,71 @@ function AddToHeap(heap, val){
 // • newstrings:  [ "xxx", "yyy" ]
 // • newhistory:  [ [ "ccc", "ddd", "eee", "fff" ], [ "ggg", "hij", "abc" ], [ "xxx", "yyy" ] ]
 
-var current = [ "xxx", "aaa", "yyy", "hij" ];
-var history = [ [ "aaa", "bbb" ], [ "ccc", "ddd", "eee", "fff" ], [ "ggg", "hij", "abc" ]  ];
+// var current = [ "xxx", "aaa", "yyy", "hij" ];
+// var history = [ [ "aaa", "bbb" ], [ "ccc", "ddd", "eee", "fff" ], [ "ggg", "hij", "abc" ]  ];
 
-function StringMadness(current, history){
+// function StringMadness(current, history){
 
-    var obj = {};
-    var newStrings = [];
-    var newHistory = [];
+//     var obj = {};
+//     var newStrings = [];
+//     var newHistory = [];
 
-    for(var i = 0; i < history.length; i++){
-        for(var j = 0; j < history[i].length; j++){
-            if(!obj[history[i][j]]){
-                obj[history[i][j]] = 1;
-            }
-        }
+//     for(var i = 0; i < history.length; i++){
+//         for(var j = 0; j < history[i].length; j++){
+//             if(!obj[history[i][j]]){
+//                 obj[history[i][j]] = 1;
+//             }
+//         }
+//     }
+
+//     for(i = 0; i < current.length; i++){
+//         if(!obj[current[i]]){
+//             newStrings.push(current[i]);
+//         }
+//     }
+
+//     history.shift();
+//     history.push(newStrings); //could just return history
+//     newHistory = history;
+//     console.log(newStrings);
+//     console.log(newHistory);
+// }
+
+// StringMadness(current, history);
+
+//do burgle with recursion.....
+
+var neighborhood = [3, 44, 25, 345, 234, 321, 542, 321, 32, 54, 1123];
+var littleNeighborhood = [3, 8, 5, 7];
+
+function burgle(arr){
+
+    if(arr.length < 1){
+        return 0;
+    }
+    if(arr.length == 1){
+        return arr[0];
+    }
+    if(arr.length == 2){ //unnesesary but i coudl leave this?
+        return Math.max(arr[0], aar[1]);
     }
 
-    for(i = 0; i < current.length; i++){
-        if(!obj[current[i]]){
-            newStrings.push(current[i]);
-        }
-    }
+    return Math.max(sidekick(arr, 0, 0), sidekick(arr, 1, 0));
 
-    history.shift();
-    history.push(newStrings); //could just return history
-    newHistory = history;
-    console.log(newStrings);
-    console.log(newHistory);
+    function sidekick(arr, index, sum){
+    
+        if(index >= arr.length){
+            return sum;
+        }
+
+        var sum1 = sidekick(arr, index + 2, sum + arr[index]);
+        var sum2 = sidekick(arr, index + 3, sum + arr[index]);
+
+        return Math.max(sum1, sum2);
+
+    }
 }
 
-StringMadness(current, history);
+console.log(burgle(littleNeighborhood));
+
+//in a binary tree find the route from node A to node B
