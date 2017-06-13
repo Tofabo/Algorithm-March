@@ -1274,18 +1274,18 @@ BST.prototype.isBST = function(){
     }
 }
 
-var badtree = new BST;
-badtree.Add(3);
-badtree.Add(5);
-badtree.Add(2);
+// var badtree = new BST;
+// badtree.Add(3);
+// badtree.Add(5);
+// badtree.Add(2);
 
-badtree.root.left.val = 5;
-// console.log(badtree.root.left.val);
-badtree.MinToMaxTraversal();
-//print this BST DONE. It is broken!
-//check if the isBSt function works Woo! It works I was just calling it on the wrong tree like a fool!
+// badtree.root.left.val = 5;
+// // console.log(badtree.root.left.val);
+// badtree.MinToMaxTraversal();
+// //print this BST DONE. It is broken!
+// //check if the isBSt function works Woo! It works I was just calling it on the wrong tree like a fool!
 
-console.log(badtree.isBST());
+// console.log(badtree.isBST());
 
 // //squares in a "true" rectangle where one side is longer than the other
 
@@ -2044,6 +2044,73 @@ function AddToHeap(heap, val){
     }
 }
 
+//remove from heap, switch item you are switching with the last item in array, then repair down, switch parent with smallest child.
+function RemoveFromHeap(heap, val){
+    //check if val is in heap
+    //if it is, switch with the last item
+        //if not, return heap
+    //repair down
+        //check both children, switch with smaller one
+        //what to do if there is only one child
+    var found = false;
+    var removeIndex;
+    var lastIndex = heap.length - 1;
+    console.log(heap[lastIndex], "last index?");
+
+    for(var i = 0; i < heap.length; i++){
+        if(heap[i] == val){
+            found = true;
+            removeIndex = i;
+        }
+    }
+
+    if(found == false){
+        return heap;
+    }
+
+    var temp = heap[removeIndex];
+    heap[removeIndex] = heap[lastIndex];
+    heap[lastIndex] = temp;
+    heap.pop();
+    console.log(heap);
+
+    //repair down
+    var parentIndex = removeIndex;
+    var Child1 = removeIndex*2;
+    var Child2 = removeIndex*2 + 1;
+
+    while(heap[parentIndex] > heap[Child1] && heap[parentIndex] > heap[Child2]){
+
+        console.log("in while loop!");
+
+        if(Child1 > lastIndex){
+            break;
+        }
+
+        if(Child2 > lastIndex){
+            temp = heap[parentIndex];
+            heap[Child1] = heap[parentIndex];
+            heap[parentIndex] = temp;
+            break;
+        }
+
+        if(heap[Child1] < heap[Child2]){
+            temp = Child1;
+            Child1 = Child2;
+            Child2 = temp;
+        }
+
+        temp = heap[Child2];
+        heap[Child2] = heap[parentIndex];
+        heap[parentIndex] = temp;
+
+    }
+
+    // is it better to have a while loop that checks if indexes are all less than heap.length? then do if check if parent is less than children as if statement in while loop
+
+    return heap;
+}
+
 // AddToHeap(heap, 1);
 // AddToHeap(heap, 3);
 // AddToHeap(heap, 5);
@@ -2051,7 +2118,22 @@ function AddToHeap(heap, val){
 // AddToHeap(heap, 7);
 // console.log(heap);
 // AddToHeap(heap, 2);
+// AddToHeap(heap, 20);
 // console.log(heap);
+// RemoveFromHeap(heap, 3);
+// console.log(heap);
+
+function experiment(){
+    var num = 5;
+    var un = undefined;
+
+    if(num > un){
+        console.log("Num is greater than un");
+    }
+
+}
+
+// experiment(); // nothing is console logged
 
 // Write a node.js function that takes as input:
 // • current:  an array of strings
@@ -2134,6 +2216,52 @@ function burgle(arr){
     }
 }
 
-console.log(burgle(littleNeighborhood));
+// console.log(burgle(littleNeighborhood));
 
 //in a binary tree find the route from node A to node B
+
+//elevator, which floor will result in the least number of stairs walked
+function elevator(arr){
+
+    console.log("elevator function");
+
+    var targetFloor = 0;
+    var totalStairs = 0;
+    var minStairs = Infinity;
+
+    for(var i = 1; i < arr.length; i++){
+        for(var j = 1; j < arr.length; j++){
+            totalStairs += arr[j] * Math.abs(i-j);
+        }
+        console.log(totalStairs, "Total stairs");
+        if(totalStairs < minStairs){
+            minStairs = totalStairs;
+            targetFloor = i;
+        }
+        totalStairs = 0;
+    }
+
+    console.log(minStairs, "this is the least number of stairs")
+    return targetFloor;
+
+}
+
+function elevator2(arr){
+
+    var passengers = 0;
+    var sum = 0;
+
+    for(var i = 1; i < arr.length; i++){
+        sum += arr[i] * i;
+        passengers += arr[i];
+    }
+
+    return Math.round(sum/passengers);
+
+}
+
+var parkingGaragePeeps = ["parking garage", 4, 5, 2, 4, 5, 7, 3, 4];
+
+console.log("What up??");
+console.log(elevator(parkingGaragePeeps), "best floor 1?");
+console.log(elevator2(parkingGaragePeeps), "best floor 2?");
