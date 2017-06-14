@@ -1772,78 +1772,78 @@ BST.prototype.isBST = function(){
 
 //linked list madness
 //constructors
-Node = function(val){
-    this.value = val;
-    this.next = null;
-}
+// Node = function(val){
+//     this.value = val;
+//     this.next = null;
+// }
 
-SLL = function(){
-    this.head = null;
-}
+// SLL = function(){
+//     this.head = null;
+// }
 
-SLL.prototype.AddToFront = function(val){ //make this better, accept node or value....
-    if (!this.head){
-        this.head = new Node(val);
-        // console.log(this.head);
-        return this;
-    }
-    var node = new Node(val);
-    node.next = this.head;
-    this.head = node;
-    return this;
-}
+// SLL.prototype.AddToFront = function(val){ //make this better, accept node or value....
+//     if (!this.head){
+//         this.head = new Node(val);
+//         // console.log(this.head);
+//         return this;
+//     }
+//     var node = new Node(val);
+//     node.next = this.head;
+//     this.head = node;
+//     return this;
+// }
 
-SLL.prototype.find = function(){
-    var runner = this.head;
-    while(runner){
+// SLL.prototype.find = function(){
+//     var runner = this.head;
+//     while(runner){
 
-    }
-}
+//     }
+// }
 
-SLL.prototype.printAll = function(){ //why do you print undefined at the end??? I was console logging this function which reurns nothing...therefore it was undefined
-    var runner = this.head;
-    while(runner){
-        console.log(runner.value);
-        runner = runner.next;
-    }
-}
+// SLL.prototype.printAll = function(){ //why do you print undefined at the end??? I was console logging this function which reurns nothing...therefore it was undefined
+//     var runner = this.head;
+//     while(runner){
+//         console.log(runner.value);
+//         runner = runner.next;
+//     }
+// }
 
-SLL.prototype.RemoveFromFront = function(){
-    var runner = this.head;
-    this.head = this.head.next;
-    runner.next = null;
-    return runner;
-}
+// SLL.prototype.RemoveFromFront = function(){
+//     var runner = this.head;
+//     this.head = this.head.next;
+//     runner.next = null;
+//     return runner;
+// }
 
-SLL.prototype.Traverse = function(){
-    var runner = this.head;
-    while(runner.next){
-        runner = runner.next;
-    }
-    return runner;
-}
+// SLL.prototype.Traverse = function(){
+//     var runner = this.head;
+//     while(runner.next){
+//         runner = runner.next;
+//     }
+//     return runner;
+// }
 
-SLL.prototype.RemoveFromBack = function(){
+// SLL.prototype.RemoveFromBack = function(){
     
-}
+// }
 
-SLL.prototype.Reverse = function(){
-    if(!this.head){
-        return this;
-    }
-    if(!this.head.next){ //if list is only one thing long
-        return this;
-    }
-    var runner = this.head;
-    var list2 = new SLL;
-    list2.head = this.head.next;
-    while(list2.head.next){
-        this.AddToFront(list2.RemoveFromFront().value);
-    }
-    this.AddToFront(list2.head.value);
-    runner.next = null;
-    return this;
-}
+// SLL.prototype.Reverse = function(){
+//     if(!this.head){
+//         return this;
+//     }
+//     if(!this.head.next){ //if list is only one thing long
+//         return this;
+//     }
+//     var runner = this.head;
+//     var list2 = new SLL;
+//     list2.head = this.head.next;
+//     while(list2.head.next){
+//         this.AddToFront(list2.RemoveFromFront().value);
+//     }
+//     this.AddToFront(list2.head.value);
+//     runner.next = null;
+//     return this;
+// }
 
 // var list = new SLL();
 // // console.log(list);
@@ -2246,7 +2246,7 @@ function elevator(arr){
 
 }
 
-function elevator2(arr){
+function elevator2(arr){ //weighted average doesn't work TT_TT there must be a trick!
 
     var passengers = 0;
     var sum = 0;
@@ -2261,7 +2261,284 @@ function elevator2(arr){
 }
 
 var parkingGaragePeeps = ["parking garage", 4, 5, 2, 4, 5, 7, 3, 4];
+var broken = ["parking garage", 1, 8, 9];
 
-console.log("What up??");
-console.log(elevator(parkingGaragePeeps), "best floor 1?");
-console.log(elevator2(parkingGaragePeeps), "best floor 2?");
+console.log(elevator(broken), "best floor 1?");
+console.log(elevator2(broken), "best floor 2?");
+
+Node = function(val){
+    this.value = val;
+    this.next = null;
+}
+
+// function node(val){ //can't print val later
+//     var value = val;
+// } 
+
+// function node(val){ //can print val later
+//     this.val = val;
+// }
+
+// function stack(){ //this function works with 'new' keyword
+//     var values = [1, 2, 3]; //private variable, can be accessed through methods, this way it can't be easily overwritten
+//     this.print = function(){
+//         for(var i = 0; i < values.length; i++){
+//             console.log(values[i]);
+//         }
+//     }
+// }
+
+stack = function(){ //this function also works 
+    this.arr = [1, 2, 3];
+    this.print = function(){
+        for(var i = 0; i < this.arr.length; i++){
+            console.log(this.arr[i]);
+        }
+    }
+}
+
+// stack.prototype.print = function(){
+//     for(var i = 0; i < this.values.length; i++){
+//         console.log(this.values[i]);
+//     }
+// }
+
+var hi = new stack();
+
+hi.print();
+
+// var woo = new node(3);
+// console.log(woo.val, "node");
+
+// function max(arr1){
+//     return Math.max(arr1);
+// }
+
+// console.log(max([1,6,3,4,10, 43,3]));
+
+// / function throttle(wait, onLast, onFirst, interval, timestamps) {
+// }
+// Test Cases and expected return
+// (20, false, true, 0, [0,10,20,30]) => [0]
+// (20, true, false, 0, [0,10,20,30]) => [50]
+// (20, false, true, 20, [0,10,20,30]) => [0,20]
+// (20, true, true, 10, [0,10,50]) => [0,,10,20,30,50,60,70]
+// Some user interactions, such as resizing and scrolling, can create a huge number of browser events in a short period of time. If listeners attached to these events take a long time to execute, the user's browser can start to slow down significantly. To mitigate this issue, we want to to implement a throttle function that will detect clusters of events and reduce the number of times we call an expensive function. 
+// Your function will accept an array representing a stream of event timestamps and return an array representing the times that a callback should have been called. If an event happens within wait time of the previous event, it is part of the same cluster. Your function should satisfy the following use cases: 
+// 1) Firing once on the first event in a cluster, e.g. as soon as the window starts resizing. 
+// 2) Firing once after the last event in a cluster, e.g. after the user window stops resizing. 
+// 3) Firing every interval milliseconds during a cluster, e.g. every 100ms while the window is resizing.
+
+function throttle(wait, onLast, onFirst, interval, timestamps){
+    //GG web dev too hard
+}
+
+// function bubble(arr){
+//     var counter = 0;
+//     for( var i = 0; i< arr.length; i++){
+//         if(arr[i+1] < arr[i]){
+//             swap(arr, i, i+1);
+//             counter ++;
+//         }
+//     }
+//     if(counter == 0){
+//         return arr;
+//     }
+//     return bubble(arr);
+// }
+
+function bubble(arr){
+    var counter = 1;
+    while(counter > 0){
+        counter = 0;
+        for( var i = 0; i< arr.length; i++){
+            if(arr[i+1] < arr[i]){
+                var temp = arr[i];
+                arr[i] = arr[i+1];
+                arr[i+1] = temp;
+                counter ++;
+                }
+        }
+    }
+  
+    return arr;
+}
+
+console.log(bubble([3,2,5,1]));
+
+// function countSection(arr){
+//     var count = 0;
+//     var pattern = /[0-9]/;
+//     for(var x = 0; x < arr.length; x++){
+//         for(var y = 0; y < arr[x].length; y++){
+//             console.log("regex test: " + pattern.test(arr[x][y]));
+//             if(pattern.test(arr[x][y])){
+//                 floodfill(arr, x, y, arr[x][y]); //how does this see the changes from the other function?
+//                 console.log( "X is: " + x + " Y is: " + y);
+//                 console.log(arr + " arr in main function. Count: " + count);
+//                 count++;
+//             }
+//         }
+//     }
+//     return "Final count it " + count;
+// }
+
+// function floodfill(arr, x, y, value){
+//     if(x<0 || y<0 ||  x> arr.length - 1 || y> arr[x].length-1 || arr[x][y] != value){ 
+//         return; //don't need to return arr
+//     }
+//     else{
+//         arr[x][y] = "A"; //work on preserving data values, althought js may ruin this by trying to be helpful
+//         floodfill(arr, x+1, y, value);
+//         floodfill(arr, x-1, y, value);
+//         floodfill(arr, x, y+1, value);
+//         floodfill(arr, x, y-1, value);
+//     }
+// }
+
+// var test = [[0, 0, 0, 1, 1],[0, 0, 1, 1, 2],[2, 2, 1, 0, 0]];
+
+// console.log(countSection(test));
+
+// function swap(arr,a,b){
+//     var temp =arr[a];
+//     arr[a] = arr[b];
+//     arr[b] = temp;
+// }
+
+// function bubble(arr){
+//     var counter = 0;
+//     for( var i = 0; i< arr.length; i++){
+//         if(arr[i+1] < arr[i]){
+//             swap(arr, i, i+1);
+//             counter ++;
+//         }
+//     }
+//     if(counter == 0){
+//         return arr;
+//     }
+//     return bubble(arr);
+// }
+
+// var test = [2, 6, 7, 5, 1];
+
+// var result = bubble(test);
+
+// console.log(result, "bubble sort"); 
+
+// function insert(arr){
+//     for(var i = 1; i < arr.length; i++){
+//         if(arr[i] < arr[i-1]){
+//             var item = arr[i];
+//             for(var j = i-1; j >= 0; j--){
+//              if(arr[j] > item){
+//                     arr[j+1] = arr[j];
+//              }
+//              else{
+//                  break;
+//              }
+//             }
+//             arr[j+1] = item;
+//         }
+//     }  
+//     return arr;
+// }
+
+// function insertionSort(items) {
+
+//     var len     = items.length,     // number of items in the array
+//         value,                      // the value currently being compared
+//         i,                          // index into unsorted section
+//         j;                          // index into sorted section
+
+//     for (i=0; i < len; i++) {
+
+//         // store the current value because it may shift later
+//         value = items[i];
+
+//         /*
+//          * Whenever the value in the sorted section is greater than the value
+//          * in the unsorted section, shift all items in the sorted section over
+//          * by one. This creates space in which to insert the value.
+//          */
+//         for (j=i-1; j > -1; j--) {
+//             if(items[j] > value){
+//                 items[j+1] = items[j];
+//             }
+//             else{
+//                 break;
+//             }
+//         }
+
+//         items[j+1] = value;
+//     }
+
+//     return items;
+// }
+
+// function sort(values) {
+//   var length = values.length;
+//   for(var i = 1; i < length; ++i) {
+//     var temp = values[i];
+//     var j = i - 1;
+//     for(; j >= 0 && values[j] > temp; --j) {
+//       values[j+1] = values[j];
+//     }
+//     values[j+1] = temp;
+//   }
+//   return values;
+// };
+
+// var test3 = [3,4,1,2];
+// var result2 = insert(test3);
+// console.log(result2, "insertion result"); 
+// // console.log(insertionSort(test3), "does this work?");
+// // console.log(sort(test3), "rround 3 gogo");
+
+
+// function selection(arr){
+//     for(var i = 0; i < arr.length; i++){
+//         for(var j = i+1; j < arr.length; j++){
+//             if(arr[j] < arr[i]){
+//                 swap(arr, i, j)
+//             }
+//         }
+//     }
+//     return arr;
+// }
+
+// var test2 = [5,4,3,2,1];
+// var result3 = selection(test2);
+// console.log(result3, "selection result");
+
+// function mergesort(arr){
+//     if(arr.length < 2){
+//         return arr;
+//     }
+    
+//     function merge(left, right){
+//         var merged = [];
+//           while (left.length && right.length) {
+//         if (left[0] <= right[0]) {
+//             result.push(left.shift());
+//         } else {
+//             result.push(right.shift());
+//         }
+//     }
+ 
+//     while (left.length)
+//         result.push(left.shift());
+ 
+//     while (right.length)
+//         result.push(right.shift());
+ 
+//     return result;
+//     }
+    
+//     var middle = Math.floor(arr.length/2)
+//     var left   = arr.slice(0, middle);
+//     var right  = arr.slice(middle, arr.length);
+ 
+//     return merge(mergesort(left), mergesort(right));
+
+// }
